@@ -1,6 +1,5 @@
 // TO DO
 // add hard drop
-// add pause
 // animate row delete
 // score more for a tetris
 // animation for a tetris
@@ -103,6 +102,24 @@ Piece.prototype.moveDown = function() {
     p = randomPiece();
   }
 }
+
+// hard drop the piece
+Piece.prototype.hardDrop = function() {
+  // check all rows in the current column
+  // for(r = 0; r < ROW; r++) {
+  //   let bottomVacantRow =
+  // }
+  if (!this.collision(0, 1, this.activeTetromino)) {
+    this.unDraw();
+    this.y += 10;
+    this.draw();
+  } else {
+    // lock the pieces and generate a new one
+    this.lock();
+    p = randomPiece();
+  }
+}
+
 
 // move the piece LEFT
 Piece.prototype.moveLeft = function() {
@@ -224,6 +241,8 @@ Piece.prototype.collision = function(x, y, piece) {
 // CONTROL the pieces
 document.addEventListener('keydown', CONTROL);
 
+let paused = false;
+
 function CONTROL(event) {
   if (event.keyCode == 37) {
     p.moveLeft();
@@ -236,6 +255,16 @@ function CONTROL(event) {
     dropStart.Date.now();
   } else if (event.keyCode == 40) {
     p.moveDown();
+  } else if (event.keyCode == 80) {
+    paused = !paused;
+    if (paused == false) {
+      requestAnimationFrame(drop);
+      document.querySelector(".paused").style.display = "none";
+    } else {
+      document.querySelector(".paused").style.display = "block";
+    }
+  } else if (event.keyCode == 32) {
+    p.hardDrop();
   }
 }
 
@@ -250,7 +279,7 @@ function drop() {
     p.moveDown();
     dropStart = Date.now();
   }
-  if (!gameOver) {
+  if (!gameOver && !paused) {
     requestAnimationFrame(drop);
   }
 }
