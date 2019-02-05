@@ -1,8 +1,36 @@
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+h1 {
+  font-size: 3rem;
+  text-align: center;
+  text-transform: uppercase;
+}
+
 canvas {
   display: block;
-  margin: 200px auto;
+  margin: 50px auto;
+  border: 3px solid black;
+}
+
+.score {
+  font-size: 2rem;
+  text-transform: uppercase;
+  text-align: center;
 }
 
 .paused {
   display: none;
+  font-size: 30px;
+  position: absolute;
+  text-align: center;
+  top: 40vh;
+  width: 100%;
+  margin: 0 auto;
 }
