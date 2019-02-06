@@ -1,7 +1,7 @@
 // TO DO
 // add start button
 // ready, set, go animation
-// score more for hard drop and combos
+// score more for combos
 // animate row delete and tetris
 // add ghost piece with toggle
 // add preview window
@@ -114,7 +114,10 @@ Piece.prototype.moveDown = function() {
 }
 
 // hard drop the piece
+let dropDifference;
+
 Piece.prototype.hardDrop = function() {
+let startDrop = this.y;
   for (r = 0; r <= 19; r++) {
     if (!this.collision(0, 1, this.activeTetrimino)) {
       this.unDraw();
@@ -124,6 +127,9 @@ Piece.prototype.hardDrop = function() {
   this.draw();
   this.lock();
   p = randomPiece();
+  dropDifference = this.y - startDrop;
+  score += dropDifference;
+  scoreElement.innerHTML = score;
 }
 
 // move the piece LEFT
@@ -220,6 +226,7 @@ Piece.prototype.lock = function() {
     } else if (rowsCleared == 4) {
       score += 800 * (level + 1);
     }
+
     scoreElement.innerHTML = score;
     levelElement.innerHTML = level;
     // update the board
