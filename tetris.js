@@ -1,15 +1,15 @@
 // TO DO
 // add hard drop
+// score more for hard drop -- number of rows dropped plus 1
+// complex scoring --back to back tetris = 1200
 // animate row delete
-// score more for a tetris
-//     hard drop -- number of rows dropped plus 1
 // animation for a tetris
 // add ghost piece with toggle
-// add preview
+// add preview window
 // add start button
 // ready, set, go animation
 // hold piece
-// t-spin
+// t-spin animation and scoring
 // increase drop speed
 // save high score
 // make canvas size responsive
@@ -17,6 +17,7 @@
 const cvs = document.getElementById("tetris");
 const ctx = cvs.getContext('2d');
 const scoreElement = document.getElementById("score");
+const levelElement = document.getElementById("level");
 
 const ROW = 20;
 const COL = 10;
@@ -52,7 +53,7 @@ function drawBoard() {
 drawBoard();
 
 // the peices and their colors
-const PIECES = [[Z, "red"], [S, "green"], [T, "cyan"], [O, "indigo"], [I, "blue"], [L, "purple"], [J, "orange"]];
+const PIECES = [[Z, "red"], [S, "green"], [T, "purple"], [O, "yellow"], [I, "cyan"], [L, "orange"], [J, "blue"]];
 
 // generate random pieces
 function randomPiece(){
@@ -175,6 +176,8 @@ Piece.prototype.rotate = function() {
 
 let score = 0;
 let rowsCleared = 0;
+let rowsClearedperLevel = 0;
+let level = 1;
 
 Piece.prototype.lock = function() {
   for (r = 0; r < this.activeTetromino.length; r++){
@@ -212,25 +215,32 @@ Piece.prototype.lock = function() {
       for (c = 0; c < COL; c++) {
         board[0][c] = VACANT;
       }
-      speedUp();
-    }
-    console.log(rowsCleared);
   }
-  // update the board
-    drawBoard();
 
   // update the score
+
     if (rowsCleared == 1) {
-      score += 40;
+      score += 40 * (level + 1);
     } else if (rowsCleared == 2) {
-      score += 100;
+      score += 100 * (level + 1);
     } else if (rowsCleared == 3) {
-      score += 300;
+      score += 300 * (level + 1);
     } else if (rowsCleared == 4) {
-      score += 1200;
+      score += 800 * (level + 1);
     }
     scoreElement.innerHTML = score;
-    rowsCleared = 0;
+    levelElement.innerHTML = level;
+    // update the board
+  }
+  drawBoard();
+  speedUp();
+
+  rowsClearedperLevel += rowsCleared;
+  rowsCleared = 0;
+  if (rowsClearedperLevel >= 10) {
+    level++;
+    rowsClearedperLevel -= 10;
+  }
 }
 
 // collision function
@@ -299,14 +309,10 @@ function CONTROL(event) {
 // move the piece every 1 second
 let dropStart = Date.now();
 let gameOver = false;
-let rate = 1000;
-let speed =  score / 100;
+let rate = 800;
 
 function speedUp() {
-  if (speed > 1 && Number.isInteger(speed)) {
-    console.log('you leveled up')
-    rate -= 200 * speedUp;
-  }
+    rate = levels[level - 1]
 }
 
 function drop() {
@@ -321,3 +327,11 @@ function drop() {
   }
 }
 drop();
+
+
+levels = {
+  // level and drop speed in ms
+  00: 800, 01: 720, 02: 630, 03: 550, 04: 470, 05: 380, 06: 300, 07: 220, 08: 130, 09: 100, 10: 80, 11: 80, 12: 80, 13: 70, 14: 70, 15: 70,
+  16: 50, 17: 50, 18: 50, 19: 30, 20: 30, 21: 30, 22: 30, 23: 30, 24: 30, 25: 30, 26: 30, 27: 30, 28: 30,
+  29: 10
+ }
