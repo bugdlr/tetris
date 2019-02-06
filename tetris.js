@@ -2,10 +2,6 @@
 // add hard drop
 // animate row delete
 // score more for a tetris
-//     1 line 40
-//     2 lines 100
-//     3 lines 300
-//     4 lines 1200
 //     hard drop -- number of rows dropped plus 1
 // animation for a tetris
 // add ghost piece with toggle
@@ -178,6 +174,7 @@ Piece.prototype.rotate = function() {
 }
 
 let score = 0;
+let rowsCleared = 0;
 
 Piece.prototype.lock = function() {
   for (r = 0; r < this.activeTetromino.length; r++){
@@ -196,6 +193,7 @@ Piece.prototype.lock = function() {
       board[this.y + r][this.x + c] = this.color;
     }
   }
+
   // remove full rows
   for(r = 0; r < ROW; r++) {
     let isRowFull = true;
@@ -203,6 +201,7 @@ Piece.prototype.lock = function() {
       isRowFull = isRowFull && (board[r][c] != VACANT);
     }
     if (isRowFull) {
+      rowsCleared++
       // if row is full, move down all rows above it
       for (y = r; y > 1; y--) {
         for (c = 0; c < COL; c++){
@@ -213,15 +212,25 @@ Piece.prototype.lock = function() {
       for (c = 0; c < COL; c++) {
         board[0][c] = VACANT;
       }
-      score += 40;
       speedUp();
     }
+    console.log(rowsCleared);
   }
   // update the board
     drawBoard();
 
   // update the score
+    if (rowsCleared == 1) {
+      score += 40;
+    } else if (rowsCleared == 2) {
+      score += 100;
+    } else if (rowsCleared == 3) {
+      score += 300;
+    } else if (rowsCleared == 4) {
+      score += 1200;
+    }
     scoreElement.innerHTML = score;
+    rowsCleared = 0;
 }
 
 // collision function
