@@ -1,16 +1,12 @@
 // TO DO
-// add hard drop
-// score more for hard drop -- number of rows dropped plus 1
-// complex scoring --back to back tetris = 1200
-// animate row delete
-// animation for a tetris
-// add ghost piece with toggle
-// add preview window
 // add start button
 // ready, set, go animation
+// score more for hard drop and combos
+// animate row delete and tetris
+// add ghost piece with toggle
+// add preview window
 // hold piece
 // t-spin animation and scoring
-// increase drop speed
 // save high score
 // make canvas size responsive
 
@@ -25,12 +21,12 @@ const sq = squareSize = 30;
 const vacant = "white";
 
 // draw a square
-function drawSquare(x,y,color) {
+function drawSquare(x, y, color) {
   ctx.fillStyle = color;
-  ctx.fillRect(x*sq, y*sq, sq, sq);
+  ctx.fillRect(x * sq, y * sq, sq, sq);
 
   ctx.strokeStyle = vacant;
-  ctx.strokeRect(x*sq, y*sq, sq, sq);
+  ctx.strokeRect(x * sq, y * sq, sq, sq);
 }
 
 // create the board
@@ -46,34 +42,40 @@ for (r = 0; r < row; r++) {
 function drawBoard() {
   for (r = 0; r < row; r++) {
     for (c = 0; c < col; c++) {
-      drawSquare(c,r,board[r][c]);
+      drawSquare(c, r, board[r][c]);
     }
   }
 }
 drawBoard();
 
-// the peices and their colors
-const peices = [[Z, "red"], [S, "green"], [T, "purple"], [O, "yellow"], [I, "cyan"], [L, "orange"], [J, "blue"]];
+// the pieces and their colors
+const pieces = [
+  [Z, "red"],
+  [S, "green"],
+  [T, "purple"],
+  [O, "yellow"],
+  [I, "cyan"],
+  [L, "orange"],
+  [J, "blue"]
+];
 
 // generate random pieces
-function randomPiece(){
-  let r = randomN = Math.floor(Math.random() * peices.length);
-  return new Piece(peices[r][0], peices[r][1]);
+function randomPiece() {
+  let r = randomN = Math.floor(Math.random() * pieces.length);
+  return new Piece(pieces[r][0], pieces[r][1]);
 }
 
 let p = randomPiece();
 
 // the Object Piece
-
-function Piece(tetrimino, color){
+function Piece(tetrimino, color) {
   this.tetrimino = tetrimino;
   this.color = color;
 
   this.tetriminoN = 0; // start from the first pattern
   this.activeTetrimino = this.tetrimino[this.tetriminoN];
 
-  // piece starting position
-  this.x = 3;
+  this.x = 3; // piece starting position
   this.y = -2;
 }
 
@@ -89,7 +91,7 @@ Piece.prototype.fill = function(color) {
 }
 
 // draw a piece to the board
-Piece.prototype.draw = function () {
+Piece.prototype.draw = function() {
   this.fill(this.color);
 }
 
@@ -144,11 +146,11 @@ Piece.prototype.moveRight = function() {
 
 // rotate the piece
 Piece.prototype.rotate = function() {
-  let nextPattern = this.tetrimino[(this.tetriminoN + 1)% this.tetrimino.length];
+  let nextPattern = this.tetrimino[(this.tetriminoN + 1) % this.tetrimino.length];
   let kick = 0;
 
   if (this.collision(0, 0, nextPattern)) {
-    if (this.x > col/2) {
+    if (this.x > col / 2) {
       // its the right wall
       kick = -1; // move the piece to the left
     } else {
@@ -171,7 +173,7 @@ let rowsClearedperLevel = 0;
 let level = 1;
 
 Piece.prototype.lock = function() {
-  for (r = 0; r < this.activeTetrimino.length; r++){
+  for (r = 0; r < this.activeTetrimino.length; r++) {
     for (c = 0; c < this.activeTetrimino.length; c++) {
       // skip the vacant squares
       if (!this.activeTetrimino[r][c]) {
@@ -189,7 +191,7 @@ Piece.prototype.lock = function() {
   }
 
   // remove full rows
-  for(r = 0; r < row; r++) {
+  for (r = 0; r < row; r++) {
     let isRowFull = true;
     for (c = 0; c < col; c++) {
       isRowFull = isRowFull && (board[r][c] != vacant);
@@ -198,18 +200,17 @@ Piece.prototype.lock = function() {
       rowsCleared++
       // if row is full, move down all rows above it
       for (y = r; y > 1; y--) {
-        for (c = 0; c < col; c++){
-          board[y][c] = board[y-1][c];
+        for (c = 0; c < col; c++) {
+          board[y][c] = board[y - 1][c];
         }
       }
       // the top row has no row above it
       for (c = 0; c < col; c++) {
         board[0][c] = vacant;
       }
-  }
+    }
 
-  // update the score
-
+    // update the score
     if (rowsCleared == 1) {
       score += 40 * (level + 1);
     } else if (rowsCleared == 2) {
@@ -236,7 +237,7 @@ Piece.prototype.lock = function() {
 
 // collision function
 Piece.prototype.collision = function(x, y, piece) {
-  for (let r = 0; r < piece.length; r++){
+  for (let r = 0; r < piece.length; r++) {
     for (let c = 0; c < piece.length; c++) {
       if (!piece[r][c]) {
         continue;
@@ -297,13 +298,13 @@ function CONTROL(event) {
   }
 }
 
-// move the piece every 1 second
+// move the piece down automatically
 let dropStart = Date.now();
 let gameOver = false;
 let rate = 800;
 
 function speedUp() {
-    rate = levels[level - 1]
+  rate = levels[level - 1]
 }
 
 function drop() {
@@ -318,11 +319,3 @@ function drop() {
   }
 }
 drop();
-
-
-levels = {
-  // level and drop speed in ms
-  00: 800, 01: 720, 02: 630, 03: 550, 04: 470, 05: 380, 06: 300, 07: 220, 08: 130, 09: 100, 10: 80, 11: 80, 12: 80, 13: 70, 14: 70, 15: 70,
-  16: 50, 17: 50, 18: 50, 19: 30, 20: 30, 21: 30, 22: 30, 23: 30, 24: 30, 25: 30, 26: 30, 27: 30, 28: 30,
-  29: 10
- }
