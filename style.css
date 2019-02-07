@@ -13,6 +13,30 @@ h1 {
   text-transform: uppercase;
 }
 
+button {
+  text-align: center;
+  line-height: 100%;
+  text-transform: uppercase;
+  padding: 0 10px;
+  border-radius: 5px;
+  background-color: #999;
+  position: absolute;
+  width: 100px;
+  margin-left: -50px;
+  left: 50%;
+  top: 50%;
+  height: 50px;
+  margin-top: -50px;
+}
+
+.play-again {
+  font-size: 24px;
+  width: auto;
+  height: auto;
+  margin-left: -90px;
+  padding: 10px;
+}
+
 canvas {
   display: block;
   margin: 50px auto;
@@ -25,12 +49,14 @@ canvas {
   text-align: center;
 }
 
-.paused {
+.paused,
+ #game-over {
   display: none;
   font-size: 30px;
   position: absolute;
   text-align: center;
-  top: 40vh;
+  top: 30vh;
   width: 100%;
   margin: 0 auto;
+  background: white;
 }

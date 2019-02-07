@@ -14,11 +14,15 @@ const cvs = document.getElementById("tetris");
 const ctx = cvs.getContext('2d');
 const scoreElement = document.getElementById("score");
 const levelElement = document.getElementById("level");
+const startButton = document.getElementById("start");
+const gameOverElement = document.getElementById("game-over");
 
 const row = 20;
 const col = 10;
 const sq = squareSize = 30;
 const vacant = "white";
+
+let board = [];
 
 // draw a square
 function drawSquare(x, y, color) {
@@ -29,14 +33,17 @@ function drawSquare(x, y, color) {
   ctx.strokeRect(x * sq, y * sq, sq, sq);
 }
 
+
 // create the board
-let board = [];
-for (r = 0; r < row; r++) {
-  board[r] = [];
-  for (c = 0; c < col; c++) {
-    board[r][c] = vacant;
+function createBoard() {
+  for (r = 0; r < row; r++) {
+    board[r] = [];
+    for (c = 0; c < col; c++) {
+      board[r][c] = vacant;
+    }
   }
 }
+createBoard();
 
 // draw the board
 function drawBoard() {
@@ -47,6 +54,8 @@ function drawBoard() {
   }
 }
 drawBoard();
+
+
 
 // the pieces and their colors
 const pieces = [
@@ -187,8 +196,13 @@ Piece.prototype.lock = function() {
       }
       // if pieces lock on top = game over
       if (this.y + r < 0) {
-        alert("Game Over");
         gameOver = true;
+        if (gameOver == true) {
+          gameOverElement.style.display = "block";
+          startButton.style.display = "block";
+        } else {
+          gameOverElement.style.display = "none";
+        }
         break;
       }
       // lock the piece
@@ -203,7 +217,15 @@ Piece.prototype.lock = function() {
       isRowFull = isRowFull && (board[r][c] != vacant);
     }
     if (isRowFull) {
+      console.log("row" + r + " is full");
       rowsCleared++
+      // infinite loop for some reason
+      // for (c = 0; c < col; c++) {
+      //   for (y = r; y > 0; r--) {
+      //     drawSquare(c, y, vacant);
+      //   }
+
+      // }
       // if row is full, move down all rows above it
       for (y = r; y > 1; y--) {
         for (c = 0; c < col; c++) {
@@ -241,6 +263,11 @@ Piece.prototype.lock = function() {
     rowsClearedperLevel -= 10;
   }
 }
+
+// row clear animation
+// function clearAnimation(rowToClear) {
+//   ctx.scale(1.5, 1.5);
+// }
 
 // collision function
 Piece.prototype.collision = function(x, y, piece) {
@@ -325,4 +352,16 @@ function drop() {
     requestAnimationFrame(drop);
   }
 }
-drop();
+
+function reset() {
+  createBoard();
+  drawBoard();
+  startButton.style.display = "none";
+  startButton.innerHTML = "Play Again?"
+  startButton.classList.add("play-again");
+  gameOver = false;
+  gameOverElement.style.display = "none";
+  drop();
+}
+
+startButton.addEventListener('click', reset);
