@@ -306,11 +306,13 @@ let paused = false;
 
 function pause() {
   paused = !paused;
-  if (paused == false) {
-    requestAnimationFrame(drop);
-    document.querySelector(".paused").style.display = "none";
-  } else {
-    document.querySelector(".paused").style.display = "block";
+  if (startButton.style.display == "none" && !iModal.classList.contains("show-modal") &&!sModal.classList.contains("show-modal")) {
+    if (paused == false) {
+      requestAnimationFrame(drop);
+      document.querySelector(".paused").style.display = "none";
+    } else {
+      document.querySelector(".paused").style.display = "block";
+    }
   }
 }
 
@@ -378,7 +380,11 @@ const iCloseButton = document.querySelector(".close-iButton");
 
 function toggleiModal() {
    iModal.classList.toggle("show-modal");
-   pause();
+   if(!paused && iModal.classList.contains("show-modal")) {
+     pause();
+   } else {
+     pause();
+   }
 }
 
 function sWindowOnClick(event) {
@@ -398,7 +404,11 @@ const sCloseButton = document.querySelector(".close-sButton");
 
 function togglesModal() {
    sModal.classList.toggle("show-modal");
-   pause();
+   if(!paused && sModal.classList.contains("show-modal")) {
+     pause();
+   } else {
+     pause();
+   }
 }
 
 function windowOnClick(event) {
