@@ -4,9 +4,27 @@
     <meta charset="utf-8">
     <title>Tetris</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
   </head>
   <body>
     <h1>Tetris</h1>
+    <div class="links">
+      <a href="#" title="Instructions" class="instruction-trigger"><i class="far fa-question-circle"></i>
+      </a>
+      <a href="#" title="Settings" class="settings-trigger"><i class="fas fa-sliders-h"></i></a>
+    </div>
+    <div class="instruction-modal">
+      <div class="modal-content">
+        <span class="close-button close-iButton">&times;</span>
+        <h2>How to Play</h2>
+      </div>
+    </div>
+    <div class="settings-modal">
+      <div class="modal-content">
+        <span class="close-button close-sButton">&times;</span>
+        <h2>Settings</h2>
+      </div>
+    </div>
     <button type="button" name="start" id="start"><h2>Start!</h2></button>
     <canvas id="tetris" width="300px" height="600px"></canvas>
     <h2 class="paused">Paused!</h2>

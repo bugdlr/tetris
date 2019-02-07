@@ -1,5 +1,4 @@
 // TO DO
-// add start button
 // ready, set, go animation
 // score more for combos
 // animate row delete and tetris
@@ -20,8 +19,8 @@ const gameOverElement = document.getElementById("game-over");
 
 const row = 20;
 const col = 10;
-const sq = squareSize = 30;
-const vacant = "snow";
+const sq = 30;
+const vacant = "white";
 
 let board = [];
 
@@ -55,7 +54,6 @@ function drawBoard() {
   }
 }
 drawBoard();
-
 
 
 // the pieces and their colors
@@ -366,3 +364,41 @@ function reset() {
 }
 
 startButton.addEventListener('click', reset);
+
+
+const iModal = document.querySelector(".instruction-modal");
+const iTrigger = document.querySelector(".instruction-trigger");
+const iCloseButton = document.querySelector(".close-iButton");
+
+function toggleiModal() {
+   iModal.classList.toggle("show-modal");
+}
+
+function windowOnClick(event) {
+   if (event.target === iModal) {
+       toggleiModal();
+     }
+}
+
+iTrigger.addEventListener("click", toggleiModal);
+iCloseButton.addEventListener("click", toggleiModal);
+window.addEventListener("click", windowOnClick);
+
+
+const sModal = document.querySelector(".settings-modal");
+const sTrigger = document.querySelector(".settings-trigger");
+const sCloseButton = document.querySelector(".close-sButton");
+
+function togglesModal() {
+   sModal.classList.toggle("show-modal");
+}
+
+function windowOnClick(event) {
+   if (event.target === sModal) {
+       togglesModal();
+     }
+}
+
+sTrigger.addEventListener("click", togglesModal);
+sCloseButton.addEventListener("click", togglesModal);
+window.addEventListener("click", windowOnClick);

@@ -7,6 +7,7 @@ Added features:
   - hard drop
   - levels and corresponding drop speed increase
   - dynamic scoring including number of lines cleared, level, and hard drops
+  - instructions and settings modals
 
 Future functionality in the works:
   - optional ghost piece

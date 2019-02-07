@@ -14,13 +14,81 @@ h1 {
   text-transform: uppercase;
 }
 
+.links {
+  display: flex;
+  justify-content: space-between;
+  width: 250px;
+  margin: 0 auto;
+}
+
+a {
+  font-size: 22px;
+}
+
+a:visited {
+  color: blue;
+}
+
+.instruction-modal,
+.settings-modal {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(1.1);
+  transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
+}
+
+.modal-content {
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 1rem 1.5rem;
+  width: 24rem;
+  border-radius: 0.5rem;
+}
+
+.close-iButton,
+.close-sButton {
+  float: right;
+  width: 1.5rem;
+  line-height: 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 0.25rem;
+  background-color: lightgray;
+}
+
+.close-button:hover {
+  background-color: darkgray;
+}
+
+.show-modal {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1.0);
+  transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
+}
+
+canvas {
+  display: block;
+  margin: 10px auto;
+  border: 3px solid black;
+}
+
 button {
   text-align: center;
   line-height: 100%;
   text-transform: uppercase;
   padding: 0 10px;
   border-radius: 5px;
-  background-color: #999;
+  background-color: #E6E6E6;
   position: absolute;
   width: 100px;
   margin-left: -50px;
@@ -28,6 +96,10 @@ button {
   top: 50%;
   height: 50px;
   margin-top: -50px;
+}
+
+button:hover {
+  cursor: pointer;
 }
 
 .play-again {
@@ -38,11 +110,6 @@ button {
   padding: 10px;
 }
 
-canvas {
-  display: block;
-  margin: 50px auto;
-  border: 3px solid black;
-}
 
 .score {
   font-size: 2rem;
