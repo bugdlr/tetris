@@ -9,6 +9,7 @@
 // save high score
 // make canvas size responsive
 // darken screen when paused or game over
+// refactor modals
 
 const cvs = document.getElementById("tetris");
 const ctx = cvs.getContext('2d');
@@ -360,6 +361,7 @@ function reset() {
   startButton.classList.add("play-again");
   gameOver = false;
   gameOverElement.style.display = "none";
+  rate = 800;
   drop();
 }
 
@@ -374,7 +376,7 @@ function toggleiModal() {
    iModal.classList.toggle("show-modal");
 }
 
-function windowOnClick(event) {
+function sWindowOnClick(event) {
    if (event.target === iModal) {
        toggleiModal();
      }
@@ -382,7 +384,7 @@ function windowOnClick(event) {
 
 iTrigger.addEventListener("click", toggleiModal);
 iCloseButton.addEventListener("click", toggleiModal);
-window.addEventListener("click", windowOnClick);
+window.addEventListener("click", sWindowOnClick);
 
 
 const sModal = document.querySelector(".settings-modal");

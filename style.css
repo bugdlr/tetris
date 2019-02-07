@@ -38,6 +38,7 @@ a:visited {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   opacity: 0;
+  z-index: 1;
   visibility: hidden;
   transform: scale(1.1);
   transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
@@ -49,10 +50,19 @@ a:visited {
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: white;
-  padding: 1rem 1.5rem;
+  padding: 1.5rem;
   width: 24rem;
   border-radius: 0.5rem;
 }
+ .modal-content h2 {
+   text-transform: uppercase;
+   text-align: center;
+ }
+
+ .modal-content ul {
+   width: 60%;
+   margin: 2rem auto;
+ }
 
 .close-iButton,
 .close-sButton {
