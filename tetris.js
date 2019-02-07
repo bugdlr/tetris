@@ -304,17 +304,21 @@ document.addEventListener('keydown', CONTROL);
 
 let paused = false;
 
+function pause() {
+  paused = !paused;
+  if (paused == false) {
+    requestAnimationFrame(drop);
+    document.querySelector(".paused").style.display = "none";
+  } else {
+    document.querySelector(".paused").style.display = "block";
+  }
+}
+
 function CONTROL(event) {
   if (event.keyCode == 80) {
-    paused = !paused;
-    if (paused == false) {
-      requestAnimationFrame(drop);
-      document.querySelector(".paused").style.display = "none";
-    } else {
-      document.querySelector(".paused").style.display = "block";
-    }
+    pause();
   }
-  if (paused == false) {
+  if(paused == false) {
     if (event.keyCode == 37) {
       p.moveLeft();
       dropStart.Date.now();
@@ -374,6 +378,7 @@ const iCloseButton = document.querySelector(".close-iButton");
 
 function toggleiModal() {
    iModal.classList.toggle("show-modal");
+   pause();
 }
 
 function sWindowOnClick(event) {
@@ -393,6 +398,7 @@ const sCloseButton = document.querySelector(".close-sButton");
 
 function togglesModal() {
    sModal.classList.toggle("show-modal");
+   pause();
 }
 
 function windowOnClick(event) {
