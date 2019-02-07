@@ -7,7 +7,7 @@ Added features:
   - hard drop
   - levels and corresponding drop speed increase
   - dynamic scoring including number of lines cleared, level, and hard drops
-  - instructions and settings modals
+  - instructions and settings panels
 
 Future functionality in the works:
   - optional ghost piece
@@ -17,5 +17,4 @@ Future functionality in the works:
   - hold area
   - preview window
   - dynamic scoring for t-spins
-  - instruction panel
   - music

@@ -359,6 +359,7 @@ function drop() {
   }
 }
 
+
 function reset() {
   createBoard();
   drawBoard();
@@ -373,38 +374,17 @@ function reset() {
 
 startButton.addEventListener('click', reset);
 
-
+// toggle modals
 const iModal = document.querySelector(".instruction-modal");
-const iTrigger = document.querySelector(".instruction-trigger");
-const iCloseButton = document.querySelector(".close-iButton");
-
-function toggleiModal() {
-   iModal.classList.toggle("show-modal");
-   if(!paused && iModal.classList.contains("show-modal")) {
-     pause();
-   } else {
-     pause();
-   }
-}
-
-function sWindowOnClick(event) {
-   if (event.target === iModal) {
-       toggleiModal();
-     }
-}
-
-iTrigger.addEventListener("click", toggleiModal);
-iCloseButton.addEventListener("click", toggleiModal);
-window.addEventListener("click", sWindowOnClick);
-
-
 const sModal = document.querySelector(".settings-modal");
+const iTrigger = document.querySelector(".instruction-trigger");
 const sTrigger = document.querySelector(".settings-trigger");
+const iCloseButton = document.querySelector(".close-iButton");
 const sCloseButton = document.querySelector(".close-sButton");
 
-function togglesModal() {
-   sModal.classList.toggle("show-modal");
-   if(!paused && sModal.classList.contains("show-modal")) {
+function toggleModal(modal) {
+   modal.classList.toggle("show-modal");
+   if(!paused && modal.classList.contains("show-modal")) {
      pause();
    } else {
      pause();
@@ -412,11 +392,20 @@ function togglesModal() {
 }
 
 function windowOnClick(event) {
-   if (event.target === sModal) {
-       togglesModal();
+   if (event.target === iModal && iModal.classList.contains("show-modal")) {
+       toggleModal(iModal);
      }
 }
 
-sTrigger.addEventListener("click", togglesModal);
-sCloseButton.addEventListener("click", togglesModal);
+function sWindowOnClick(event) {
+   if (event.target === sModal && sModal.classList.contains("show-modal")) {
+       toggleModal(sModal);
+     }
+}
+
+iTrigger.addEventListener("click", function() {toggleModal(iModal)} );
+sTrigger.addEventListener("click", function() {toggleModal(sModal)} );
+iCloseButton.addEventListener("click", function () {toggleModal(iModal)});
+sCloseButton.addEventListener("click", function () {toggleModal(sModal)});
 window.addEventListener("click", windowOnClick);
+window.addEventListener("click", sWindowOnClick);
