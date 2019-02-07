@@ -9,6 +9,7 @@
 // t-spin animation and scoring
 // save high score
 // make canvas size responsive
+// darken screen when paused or game over
 
 const cvs = document.getElementById("tetris");
 const ctx = cvs.getContext('2d');
@@ -20,7 +21,7 @@ const gameOverElement = document.getElementById("game-over");
 const row = 20;
 const col = 10;
 const sq = squareSize = 30;
-const vacant = "white";
+const vacant = "snow";
 
 let board = [];
 
