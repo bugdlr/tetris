@@ -359,6 +359,15 @@ function drop() {
   }
 }
 
+const ready = document.querySelector("#ready");
+const set = document.querySelector("#set");
+const go = document.querySelector("#go");
+
+function readySetGo() {
+  ready.style.WebkitAnimationPlayState = "running";
+  set.style.WebkitAnimationPlayState = "running";
+  go.style.WebkitAnimationPlayState = "running";
+}
 
 function reset() {
   createBoard();
@@ -368,8 +377,9 @@ function reset() {
   startButton.classList.add("play-again");
   gameOver = false;
   gameOverElement.style.display = "none";
+  readySetGo();
   rate = 800;
-  drop();
+  setTimeout(drop, 4000);
 }
 
 startButton.addEventListener('click', reset);
@@ -392,13 +402,13 @@ function toggleModal(modal) {
 }
 
 function windowOnClick(event) {
-   if (event.target === iModal && iModal.classList.contains("show-modal")) {
+   if (event.target === iModal) {
        toggleModal(iModal);
      }
 }
 
 function sWindowOnClick(event) {
-   if (event.target === sModal && sModal.classList.contains("show-modal")) {
+   if (event.target === sModal) {
        toggleModal(sModal);
      }
 }

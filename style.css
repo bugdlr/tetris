@@ -14,6 +14,50 @@ h1 {
   text-transform: uppercase;
 }
 
+.readySetGo h2 {
+  opacity: 0;
+  position: absolute;
+  text-align: center;
+  top: 30vh;
+  width: 100%;
+  margin: 0 auto;
+}
+
+@keyframes popUp {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.anim {
+  animation-name: popUp;
+  animation-duration: 1.3s;
+  animation-direction: backwards;
+  -webkit-animation-play-state: paused;
+}
+
+.animSet {
+  animation-name: popUp;
+  animation-duration: 1.3s;
+  animation-direction: forwards;
+  animation-delay: 1.4s;
+  -webkit-animation-play-state: paused;
+}
+
+.animGo {
+  animation-name: popUp;
+  animation-duration: 1.3s;
+  animation-direction: forwards;
+  animation-delay: 2.8s;
+  -webkit-animation-play-state: paused;
+}
+
 .links {
   display: flex;
   justify-content: space-between;
