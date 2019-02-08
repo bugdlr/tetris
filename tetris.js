@@ -1,5 +1,5 @@
 // TO DO
-// ready, set, go animation
+// ready, set, go after play again
 // score more for combos
 // animate row delete and tetris
 // add ghost piece with toggle
@@ -367,16 +367,27 @@ function readySetGo() {
   ready.style.WebkitAnimationPlayState = "running";
   set.style.WebkitAnimationPlayState = "running";
   go.style.WebkitAnimationPlayState = "running";
+  setTimeout(readyAgain, 5000);
+}
+
+function readyAgain() {
+  ready.style.WebkitAnimationPlayState = "paused";
+  set.style.WebkitAnimationPlayState = "paused";
+  go.style.WebkitAnimationPlayState = "paused";
 }
 
 function reset() {
-  createBoard();
-  drawBoard();
+  gameOver = false;
+  score = 0;
+  level = 1;
+  scoreElement.innerHTML = score;
+  levelElement.innerHTML = level;
   startButton.style.display = "none";
   startButton.innerHTML = "Play Again?"
   startButton.classList.add("play-again");
-  gameOver = false;
   gameOverElement.style.display = "none";
+  createBoard();
+  drawBoard();
   readySetGo();
   rate = 800;
   setTimeout(drop, 4000);
