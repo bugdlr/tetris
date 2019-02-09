@@ -21,6 +21,8 @@ h1 {
   top: 30vh;
   width: 100%;
   margin: 0 auto;
+  color: red;
+  text-transform: uppercase;
 }
 
 @keyframes popUp {
