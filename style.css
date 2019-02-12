@@ -40,7 +40,7 @@ h1 {
 .anim {
   animation-name: popUp;
   animation-duration: 1.3s;
-  animation-direction: backwards;
+  animation-direction: forwards;
   -webkit-animation-play-state: paused;
 }
 

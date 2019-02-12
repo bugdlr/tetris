@@ -75,6 +75,22 @@ function randomPiece() {
 }
 
 let p = randomPiece();
+// let ghost = p;
+// ghost.color = "gray";
+// console.log(ghost);
+
+//
+// Piece.prototype.ghostPosition = function() {
+//   // for (r = 0; r <= 19; r++) {
+//   //   if (!this.collision(0, 1, this.activeTetrimino)) {
+//   //     this.unDraw();
+//   //     this.y++;
+//   //   }
+//     this.y = 19;
+//     this.color = "gray";
+//     // this.draw();
+//   // }
+// }
 
 // the Object Piece
 function Piece(tetrimino, color) {
@@ -219,13 +235,6 @@ Piece.prototype.lock = function() {
     if (isRowFull) {
       console.log("row" + r + " is full");
       rowsCleared++
-      // infinite loop for some reason
-      // for (c = 0; c < col; c++) {
-      //   for (y = r; y > 0; r--) {
-      //     drawSquare(c, y, vacant);
-      //   }
-
-      // }
       // if row is full, move down all rows above it
       for (y = r; y > 1; y--) {
         for (c = 0; c < col; c++) {
@@ -264,10 +273,6 @@ Piece.prototype.lock = function() {
   }
 }
 
-// row clear animation
-// function clearAnimation(rowToClear) {
-//   ctx.scale(1.5, 1.5);
-// }
 
 // collision function
 Piece.prototype.collision = function(x, y, piece) {
@@ -371,9 +376,9 @@ function readySetGo() {
 }
 
 function readyAgain() {
-  ready.style.WebkitAnimationPlayState = "paused";
-  set.style.WebkitAnimationPlayState = "paused";
-  go.style.WebkitAnimationPlayState = "paused";
+  ready.removeAttribute("style");
+  set.removeAttribute("style");
+  go.removeAttribute("style");
 }
 
 function reset() {
