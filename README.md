@@ -5,14 +5,14 @@ A JavaScript-based desktop browser version of classic Tetris, modified from a ht
 Added features:
   - pause
   - hard drop
+  - optional ghost piece
   - levels and corresponding drop speed increase
   - dynamic scoring including number of lines cleared, level, and hard drops
   - instructions and settings panels
+  - animated start
 
 Future functionality in the works:
-  - optional ghost piece
   - animated line clearing
-  - animated start button
   - animated game over
   - hold area
   - preview window

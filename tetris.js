@@ -1,8 +1,8 @@
 // TO DO
 // ready, set, go after play again
+// disable space bar during ready set go
 // score more for combos
 // animate row delete and tetris
-// add ghost piece with toggle
 // add preview window
 // hold piece
 // t-spin animation and scoring
@@ -76,21 +76,6 @@ function randomPiece() {
 }
 
 let p = randomPiece();
-// let ghost = Object.create(p);
-//
-//
-// ghost.ghostPosition = function() {
-//   // for (r = 0; r <= 19; r++) {
-//   //   if (!this.collision(0, 1, this.activeTetrimino)) {
-//   //     this.y++;
-//   //     }
-//   //   }
-//     this.color = gray;
-//     this.y = 18;
-//     this.draw();
-//
-
-
 
 // the Object Piece
 function Piece(tetrimino, color) {
@@ -107,6 +92,18 @@ function Piece(tetrimino, color) {
 }
 
 // ghost piece position
+let ghostOn = true;
+let ghostBox = document.getElementById("ghostBox");
+
+function toggleGhost () {
+  ghostOn = !ghostOn;
+  if (!ghostOn) {
+    p.ghost.fill(vacant);
+  }
+}
+
+ghostBox.addEventListener('click', toggleGhost);
+
 Piece.prototype.ghostPosition = function () {
   this.ghost.y = 0;
   for (let r = 0; r <= 19; r++) {
@@ -130,14 +127,18 @@ Piece.prototype.fill = function(color) {
 // draw a piece to the board
 Piece.prototype.draw = function() {
   this.fill(this.color);
-  this.ghost.ghostPosition();
-  this.ghost.fill(gray);
+  if (ghostOn) {
+    this.ghost.ghostPosition();
+    this.ghost.fill(gray);
+  }
 }
 
 // undraw a piece
 Piece.prototype.unDraw = function() {
   this.fill(vacant);
-  this.ghost.fill(vacant);
+  if (ghostOn) {
+    this.ghost.fill(vacant);
+  }
 }
 
 // move the piece down
