@@ -10,6 +10,7 @@ Added features:
   - dynamic scoring including number of lines cleared, level, and hard drops
   - instructions and settings panels
   - animated start
+  - high score kept in local storage
 
 Future functionality in the works:
   - animated line clearing

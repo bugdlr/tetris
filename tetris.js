@@ -11,6 +11,7 @@
 // darken screen when paused or game over
 // refactor modals
 // ghost piece bug when underneath locked pieces
+// don't let piece overlap ghost
 
 const cvs = document.getElementById("tetris");
 const ctx = cvs.getContext('2d');
