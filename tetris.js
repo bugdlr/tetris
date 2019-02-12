@@ -22,6 +22,7 @@ const row = 20;
 const col = 10;
 const sq = 30;
 const vacant = "white";
+const gray = "rgba(0,0,0,0.1)";
 
 let board = [];
 
@@ -75,22 +76,21 @@ function randomPiece() {
 }
 
 let p = randomPiece();
-// let ghost = p;
-// ghost.color = "gray";
-// console.log(ghost);
-
+// let ghost = Object.create(p);
 //
-// Piece.prototype.ghostPosition = function() {
+//
+// ghost.ghostPosition = function() {
 //   // for (r = 0; r <= 19; r++) {
 //   //   if (!this.collision(0, 1, this.activeTetrimino)) {
-//   //     this.unDraw();
 //   //     this.y++;
+//   //     }
 //   //   }
-//     this.y = 19;
-//     this.color = "gray";
-//     // this.draw();
-//   // }
-// }
+//     this.color = gray;
+//     this.y = 18;
+//     this.draw();
+//
+
+
 
 // the Object Piece
 function Piece(tetrimino, color) {
@@ -102,6 +102,18 @@ function Piece(tetrimino, color) {
 
   this.x = 3; // piece starting position
   this.y = -2;
+
+  this.ghost = Object.create(this);
+}
+
+// ghost piece position
+Piece.prototype.ghostPosition = function () {
+  this.ghost.y = 0;
+  for (let r = 0; r <= 19; r++) {
+    if (!this.collision(0, 1, this.activeTetrimino)) {
+      this.ghost.y++;
+    }
+  }
 }
 
 // fill function
@@ -118,16 +130,20 @@ Piece.prototype.fill = function(color) {
 // draw a piece to the board
 Piece.prototype.draw = function() {
   this.fill(this.color);
+  this.ghost.ghostPosition();
+  this.ghost.fill(gray);
 }
 
 // undraw a piece
 Piece.prototype.unDraw = function() {
   this.fill(vacant);
+  this.ghost.fill(vacant);
 }
 
 // move the piece down
 Piece.prototype.moveDown = function() {
   if (!this.collision(0, 1, this.activeTetrimino)) {
+    this.ghost.ghostPosition();
     this.unDraw();
     this.y++;
     this.draw();
@@ -233,7 +249,6 @@ Piece.prototype.lock = function() {
       isRowFull = isRowFull && (board[r][c] != vacant);
     }
     if (isRowFull) {
-      console.log("row" + r + " is full");
       rowsCleared++
       // if row is full, move down all rows above it
       for (y = r; y > 1; y--) {
@@ -296,7 +311,7 @@ Piece.prototype.collision = function(x, y, piece) {
       }
 
       // check if there is a locked piece already in place
-      if (board[newY][newX] != vacant) {
+      if (board[newY][newX] != vacant && board[newY][newX] != gray) {
         return true;
       }
     }
