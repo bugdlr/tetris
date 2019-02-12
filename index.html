@@ -1,58 +1,66 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>Tetris</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-  </head>
-  <body>
-    <h1>Tetris</h1>
-    <div class="links">
-      <a href="#" title="Instructions" class="trigger instruction-trigger"><i class="far fa-question-circle"></i>
+
+<head>
+  <meta charset="utf-8">
+  <title>Tetris</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+</head>
+
+<body>
+  <h1>Tetris</h1>
+  <div class="links">
+    <a href="#" title="Instructions" class="trigger instruction-trigger"><i class="far fa-question-circle"></i>
       </a>
-      <a href="#" title="Settings" class="trigger settings-trigger"><i class="fas fa-sliders-h"></i></a>
+    <a href="#" title="Settings" class="trigger settings-trigger"><i class="fas fa-sliders-h"></i></a>
+  </div>
+  <div class="modal instruction-modal">
+    <div class="modal-content">
+      <span class="close-button close-iButton">&times;</span>
+      <h2>How to Play</h2>
+      <p>Clear horizontal lines of blocks by manuvering the falling blocks to fill each row. Earn more points by clearing multiple lines at once. Speed up the rate of falling by soft or hard dropping. Hard dropping earns an extra point for each row
+        skipped. The blocks will progressively fall faster as you achieve higher levels. The game ends when the blocks reach the top of the playing field.</p>
+      <ul>
+        <p>KEYBOARD CONTROLS</p>
+        <li>right arrow = move piece right</li>
+        <li>left arrow = move piece left</li>
+        <li>up arrow = rotate piece</li>
+        <li>down arrow = soft drop</li>
+        <li>spacebar = hard drop</li>
+        <li>p = pause/unpause the game</li>
+      </ul>
     </div>
-    <div class="modal instruction-modal">
-      <div class="modal-content">
-        <span class="close-button close-iButton">&times;</span>
-        <h2>How to Play</h2>
-        <p>Clear horizontal lines of blocks by manuvering the falling blocks to fill each row. Earn more points by clearing multiple lines at once. Speed up the rate of falling by soft or hard dropping. Hard dropping earns an extra point for each row skipped. The blocks will progressively fall faster as you achieve higher levels. The game ends when the blocks reach the top of the playing field.</p>
-        <ul>
-          <p>KEYBOARD CONTROLS</p>
-          <li>right arrow = move piece right</li>
-          <li>left arrow = move piece left</li>
-          <li>up arrow = rotate piece</li>
-          <li>down arrow = soft drop</li>
-          <li>spacebar = hard drop</li>
-          <li>p = pause/unpause the game</li>
-        </ul>
-      </div>
+  </div>
+  <div class="modal settings-modal">
+    <div class="modal-content">
+      <span class="close-button close-sButton">&times;</span>
+      <h2>Settings</h2>
+      <p>Ghost Piece<input type="checkbox" name="ghost" value="" id="ghostBox" checked></p>
     </div>
-    <div class="modal settings-modal">
-      <div class="modal-content">
-        <span class="close-button close-sButton">&times;</span>
-        <h2>Settings</h2>
-        <p>Ghost Piece<input type="checkbox" name="ghost" value="" id="ghostBox" checked></p>
-      </div>
-    </div>
-    <button type="button" name="start" id="start"><h2>Start!</h2></button>
-    <div class="readySetGo">
-      <h2 class="anim" id="ready">Ready?</h2>
-      <h2 class="animSet" id="set">set</h2>
-      <h2 class="animGo" id="go">GO!</h2>
-    </div>
-    <canvas id="tetris" width="300px" height="600px"></canvas>
-    <h2 class="paused">Paused!</h2>
-    <h2 id="game-over">Game Over!</h2>
-<div class="score">
-  Score : <span id="score">0</span> <br>
+  </div>
+  <button type="button" name="start" id="start"><h2>Start!</h2></button>
+  <div class="readySetGo">
+    <h2 class="anim" id="ready">Ready?</h2>
+    <h2 class="animSet" id="set">set</h2>
+    <h2 class="animGo" id="go">GO!</h2>
+  </div>
+  <canvas id="tetris" width="300px" height="600px"></canvas>
+  <h2 class="paused">Paused!</h2>
+  <h2 id="game-over">Game Over!</h2>
+  <div class="score">
+    Score : <span id="score">0</span> <br>
   Level : <span id="level">1</span>
-</div>
+  </div>
+
+  <div class="highScore">
+    High Score : <span id="highScore"></span>
+  </div>
 
 
-    <script src="tetriminoes.js"></script>
-    <script src="tetris.js"></script>
-    <script src="http://localhost:35729/livereload.js"></script>
-  </body>
+  <script src="tetriminoes.js"></script>
+  <script src="tetris.js"></script>
+  <script src="http://localhost:35729/livereload.js"></script>
+</body>
+
 </html>

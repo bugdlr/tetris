@@ -10,11 +10,13 @@
 // make canvas size responsive
 // darken screen when paused or game over
 // refactor modals
+// ghost piece bug when underneath locked pieces
 
 const cvs = document.getElementById("tetris");
 const ctx = cvs.getContext('2d');
 const scoreElement = document.getElementById("score");
 const levelElement = document.getElementById("level");
+const highScoreElement = document.getElementById("highScore");
 const startButton = document.getElementById("start");
 const gameOverElement = document.getElementById("game-over");
 
@@ -91,11 +93,11 @@ function Piece(tetrimino, color) {
   this.ghost = Object.create(this);
 }
 
-// ghost piece position
+// ghost piece toggle and positioning
 let ghostOn = true;
 let ghostBox = document.getElementById("ghostBox");
 
-function toggleGhost () {
+function toggleGhost() {
   ghostOn = !ghostOn;
   if (!ghostOn) {
     p.ghost.fill(vacant);
@@ -104,7 +106,7 @@ function toggleGhost () {
 
 ghostBox.addEventListener('click', toggleGhost);
 
-Piece.prototype.ghostPosition = function () {
+Piece.prototype.ghostPosition = function() {
   this.ghost.y = 0;
   for (let r = 0; r <= 19; r++) {
     if (!this.collision(0, 1, this.activeTetrimino)) {
@@ -159,7 +161,7 @@ Piece.prototype.moveDown = function() {
 let dropDifference;
 
 Piece.prototype.hardDrop = function() {
-let startDrop = this.y;
+  let startDrop = this.y;
   for (r = 0; r <= 19; r++) {
     if (!this.collision(0, 1, this.activeTetrimino)) {
       this.unDraw();
@@ -219,6 +221,9 @@ let score = 0;
 let rowsCleared = 0;
 let rowsClearedperLevel = 0;
 let level = 1;
+let highScoreValue = highScoreElement.innerHTML;
+highScoreElement.innerHTML = localStorage.getItem('highScore');
+
 
 Piece.prototype.lock = function() {
   for (r = 0; r < this.activeTetrimino.length; r++) {
@@ -233,6 +238,7 @@ Piece.prototype.lock = function() {
         if (gameOver == true) {
           gameOverElement.style.display = "block";
           startButton.style.display = "block";
+          setScore();
         } else {
           gameOverElement.style.display = "none";
         }
@@ -276,6 +282,7 @@ Piece.prototype.lock = function() {
 
     scoreElement.innerHTML = score;
     levelElement.innerHTML = level;
+
     // update the board
   }
   drawBoard();
@@ -327,7 +334,7 @@ let paused = false;
 
 function pause() {
   paused = !paused;
-  if (startButton.style.display == "none" && !iModal.classList.contains("show-modal") &&!sModal.classList.contains("show-modal")) {
+  if (startButton.style.display == "none" && !iModal.classList.contains("show-modal") && !sModal.classList.contains("show-modal")) {
     if (paused == false) {
       requestAnimationFrame(drop);
       document.querySelector(".paused").style.display = "none";
@@ -341,7 +348,7 @@ function CONTROL(event) {
   if (event.keyCode == 80) {
     pause();
   }
-  if(paused == false) {
+  if (paused == false) {
     if (event.keyCode == 37) {
       p.moveLeft();
       dropStart.Date.now();
@@ -380,6 +387,7 @@ function drop() {
   }
 }
 
+// start game
 const ready = document.querySelector("#ready");
 const set = document.querySelector("#set");
 const go = document.querySelector("#go");
@@ -397,8 +405,16 @@ function readyAgain() {
   go.removeAttribute("style");
 }
 
-function reset() {
+function setScore () {
   gameOver = false;
+  if (highScoreElement.innerHTML < score) {
+    highScoreValue = score;
+    highScoreElement.innerHTML = highScoreValue;
+  }
+  localStorage.setItem('highScore', highScoreValue);
+}
+
+function reset() {
   score = 0;
   level = 1;
   scoreElement.innerHTML = score;
@@ -425,29 +441,37 @@ const iCloseButton = document.querySelector(".close-iButton");
 const sCloseButton = document.querySelector(".close-sButton");
 
 function toggleModal(modal) {
-   modal.classList.toggle("show-modal");
-   if(!paused && modal.classList.contains("show-modal")) {
-     pause();
-   } else {
-     pause();
-   }
+  modal.classList.toggle("show-modal");
+  if (!paused && modal.classList.contains("show-modal")) {
+    pause();
+  } else {
+    pause();
+  }
 }
 
 function windowOnClick(event) {
-   if (event.target === iModal) {
-       toggleModal(iModal);
-     }
+  if (event.target === iModal) {
+    toggleModal(iModal);
+  }
 }
 
 function sWindowOnClick(event) {
-   if (event.target === sModal) {
-       toggleModal(sModal);
-     }
+  if (event.target === sModal) {
+    toggleModal(sModal);
+  }
 }
 
-iTrigger.addEventListener("click", function() {toggleModal(iModal)} );
-sTrigger.addEventListener("click", function() {toggleModal(sModal)} );
-iCloseButton.addEventListener("click", function () {toggleModal(iModal)});
-sCloseButton.addEventListener("click", function () {toggleModal(sModal)});
+iTrigger.addEventListener("click", function() {
+  toggleModal(iModal)
+});
+sTrigger.addEventListener("click", function() {
+  toggleModal(sModal)
+});
+iCloseButton.addEventListener("click", function() {
+  toggleModal(iModal)
+});
+sCloseButton.addEventListener("click", function() {
+  toggleModal(sModal)
+});
 window.addEventListener("click", windowOnClick);
 window.addEventListener("click", sWindowOnClick);
