@@ -19,3 +19,4 @@ Future functionality in the works:
   - preview window
   - dynamic scoring for t-spins
   - music
+  - new high score alert
