@@ -12,6 +12,7 @@
 // refactor modals
 // ghost piece bug when underneath locked pieces
 // don't let piece overlap ghost
+// stop pieces from falling at game over
 
 const cvs = document.getElementById("tetris");
 const ctx = cvs.getContext('2d');
@@ -43,10 +44,10 @@ function drawSquare(x, y, color) {
 
 function drawPreviewSquare(x, y, color) {
   windowCtx.fillStyle = color;
-  windowCtx.fillRect(x * sq, y * sq, sq, sq);
+  windowCtx.fillRect(x * 20, y * 20, 20, 20);
 
   windowCtx.strokeStyle = vacant;
-  windowCtx.strokeRect(x * sq, y * sq, sq, sq);
+  windowCtx.strokeRect(x * 20, y * 20, 20, 20);
 }
 
 function drawCanvas() {
@@ -112,6 +113,8 @@ function Piece(tetrimino, color) {
 
   this.ghost = Object.create(this);
   this.preview = Object.create(this);
+  this.preview.x = 0;
+  this.preview.y = 0;
 }
 
 // ghost piece toggle and positioning
