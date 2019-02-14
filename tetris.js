@@ -15,6 +15,8 @@
 
 const cvs = document.getElementById("tetris");
 const ctx = cvs.getContext('2d');
+const previewWindow = document.getElementById("previewWindow");
+const windowCtx = previewWindow.getContext('2d');
 const scoreElement = document.getElementById("score");
 const levelElement = document.getElementById("level");
 const highScoreElement = document.getElementById("highScore");
@@ -28,9 +30,26 @@ const vacant = "white";
 const gray = "rgba(0,0,0,0.1)";
 
 let board = [];
+let preview = [];
 
 // draw a square
 function drawSquare(x, y, color) {
+  ctx.fillStyle = color;
+  ctx.fillRect(x * sq, y * sq, sq, sq);
+
+  ctx.strokeStyle = vacant;
+  ctx.strokeRect(x * sq, y * sq, sq, sq);
+}
+
+function drawPreviewSquare(x, y, color) {
+  windowCtx.fillStyle = color;
+  windowCtx.fillRect(x * sq, y * sq, sq, sq);
+
+  windowCtx.strokeStyle = vacant;
+  windowCtx.strokeRect(x * sq, y * sq, sq, sq);
+}
+
+function drawCanvas() {
   ctx.fillStyle = color;
   ctx.fillRect(x * sq, y * sq, sq, sq);
 
@@ -92,6 +111,7 @@ function Piece(tetrimino, color) {
   this.y = -2;
 
   this.ghost = Object.create(this);
+  this.preview = Object.create(this);
 }
 
 // ghost piece toggle and positioning
