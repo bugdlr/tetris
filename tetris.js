@@ -267,30 +267,32 @@ Piece.prototype.rotate = function() {
 let holding = false;
 let heldPiece;
 let unheldPiece = heldPiece;
+let firstHold = true;
 
-// if its holding, make p = the held piece
-// don't allow more than one time (maybe disable shift until a piece is locked?)
+// fix glitch where it occassionally erases a locked piece
 
 Piece.prototype.hold = function () {
-  this.unDraw();
-  clearArea(drawPreview);
-  clearArea(drawHold);
-  unheldPiece = heldPiece;
-  heldPiece = p;
-  this.y = -1;
-  this.x = 3;
+  if (firstHold) {
+    this.unDraw();
+    clearArea(drawPreview);
+    clearArea(drawHold);
+    unheldPiece = heldPiece;
+    heldPiece = p;
+    firstHold = false;
 
-  if (holding) {
-    p = unheldPiece;
-  } else {
-    p = previewPiece;
-    previewPiece = randomPiece();
+    if (holding) {
+      p = unheldPiece;
+    } else {
+      p = previewPiece;
+      previewPiece = randomPiece();
+    }
+
+    this.y = -1;
+    this.x = 3;
+    this.preview.fill(this.preview.color, drawHold);
+    previewPiece.preview.fill(previewPiece.preview.color, drawPreview);
+    holding = true;
   }
-
-  this.preview.fill(this.preview.color, drawHold);
-  previewPiece.preview.fill(previewPiece.preview.color, drawPreview);
-  holding = true;
-  console.log("holding is "  + holding);
 }
 
 let score = 0;
@@ -322,6 +324,7 @@ Piece.prototype.lock = function() {
       }
       // lock the piece
       tetris[this.y + r][this.x + c] = this.color;
+      firstHold = true;
     }
   }
 
@@ -489,7 +492,7 @@ function readyAgain() {
 function setScore () {
   if (gameOver == true) {
     if (highScoreElement.innerHTML < score) {
-      highScoreValue = clearArea(drawHold);score;
+      highScoreValue = score;
       highScoreElement.innerHTML = highScoreValue;
     }
     localStorage.setItem('highScore', highScoreValue);
