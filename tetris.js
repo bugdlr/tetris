@@ -175,10 +175,10 @@ Piece.prototype.unDraw = function() {
 }
 
 // clear preview
-function clearPreview () {
+function clearArea (area) {
   for (r = 0; r < 4; r++) {
     for (c = 0; c < 4; c++) {
-      drawPreview(r, c, vacant);
+      area(r, c, vacant);
     }
   }
 }
@@ -193,7 +193,7 @@ Piece.prototype.moveDown = function() {
   } else {
     // lock the pieces and generate a new one
     this.lock();
-    clearPreview();
+    clearArea(drawPreview);
     p = previewPiece;
     previewPiece = randomPiece();
     previewPiece.preview.fill(previewPiece.preview.color, drawPreview);
@@ -213,7 +213,7 @@ Piece.prototype.hardDrop = function() {
   }
   this.draw();
   this.lock();
-  clearPreview();
+  clearArea(drawPreview);
   p = previewPiece;
   previewPiece = randomPiece();
   previewPiece.preview.fill(previewPiece.preview.color, drawPreview);
@@ -265,19 +265,31 @@ Piece.prototype.rotate = function() {
 
 // hold the piece
 let holding = false;
+let heldPiece;
+let unheldPiece = heldPiece;
 
-// clear the hold window
 // if its holding, make p = the held piece
 // don't allow more than one time (maybe disable shift until a piece is locked?)
 
 Piece.prototype.hold = function () {
-  holding = !holding;
   this.unDraw();
-  clearPreview();
+  clearArea(drawPreview);
+  clearArea(drawHold);
+  unheldPiece = heldPiece;
+  heldPiece = p;
+  this.y = -1;
+  this.x = 3;
+
+  if (holding) {
+    p = unheldPiece;
+  } else {
+    p = previewPiece;
+    previewPiece = randomPiece();
+  }
+
   this.preview.fill(this.preview.color, drawHold);
-  p = previewPiece;
-  previewPiece = randomPiece();
   previewPiece.preview.fill(previewPiece.preview.color, drawPreview);
+  holding = true;
   console.log("holding is "  + holding);
 }
 
@@ -477,7 +489,7 @@ function readyAgain() {
 function setScore () {
   if (gameOver == true) {
     if (highScoreElement.innerHTML < score) {
-      highScoreValue = score;
+      highScoreValue = clearArea(drawHold);score;
       highScoreElement.innerHTML = highScoreValue;
     }
     localStorage.setItem('highScore', highScoreValue);
@@ -494,7 +506,9 @@ function reset() {
   startButton.innerHTML = "Play Again?"
   startButton.classList.add("play-again");
   gameOverElement.style.display = "none";
-  clearPreview();
+  clearArea(drawPreview);
+  clearArea(drawHold);
+  holding = false;
   createBoard(tetris, 20, 10);
   drawBoard(tetris, 20, 10);
   readySetGo();
