@@ -52,6 +52,14 @@ function drawPreview(x, y, color) {
   pwctx.strokeRect(x * 20, y * 20, 20, 20);
 }
 
+function drawHold(x, y, color) {
+  hwctx.fillStyle = color;
+  hwctx.fillRect(x * 20, y * 20, 20, 20);
+
+  hwctx.strokeStyle = vacant;
+  hwctx.strokeRect(x * 20, y * 20, 20, 20);
+}
+
 // create the board
 function createBoard(board, row, col) {
   for (r = 0; r < row; r++) {
@@ -158,7 +166,6 @@ Piece.prototype.draw = function() {
   }
 }
 
-
 // undraw a piece
 Piece.prototype.unDraw = function() {
   this.fill(vacant, drawSquare);
@@ -254,6 +261,24 @@ Piece.prototype.rotate = function() {
     this.activeTetrimino = this.tetrimino[this.tetriminoN];
     this.draw();
   }
+}
+
+// hold the piece
+let holding = false;
+
+// clear the hold window
+// if its holding, make p = the held piece
+// don't allow more than one time (maybe disable shift until a piece is locked?)
+
+Piece.prototype.hold = function () {
+  holding = !holding;
+  this.unDraw();
+  clearPreview();
+  this.preview.fill(this.preview.color, drawHold);
+  p = previewPiece;
+  previewPiece = randomPiece();
+  previewPiece.preview.fill(previewPiece.preview.color, drawPreview);
+  console.log("holding is "  + holding);
 }
 
 let score = 0;
@@ -402,6 +427,8 @@ function CONTROL(event) {
       p.moveDown();
     } else if (event.keyCode == 32) {
       p.hardDrop();
+    } else if (event.keyCode == 16) {
+      p.hold();
     }
   }
 }
@@ -426,6 +453,8 @@ function drop() {
     requestAnimationFrame(drop);
   }
 }
+
+
 
 // start game
 const ready = document.querySelector("#ready");

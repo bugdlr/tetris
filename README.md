@@ -6,17 +6,18 @@ Added features:
   - pause
   - hard drop
   - optional ghost piece
+  - preview window showing the next piece on deck
+  - hold queue allowing a piece to be stashed for later use
   - levels and corresponding drop speed increase
-  - dynamic scoring including number of lines cleared, level, and hard drops
+  - dynamic scoring incorporating number of lines cleared at once, current level, and hard drop distance
   - instructions and settings panels
   - animated start
   - high score kept in local storage
 
-Future functionality in the works:
+Future functionality to be added:
   - animated line clearing
   - animated game over
-  - hold area
-  - preview window
-  - dynamic scoring for t-spins
+  - animated message for tetris and t-spin
+  - dynamic scoring for t-spins, combos, and back-to-back tetrises
   - music
   - new high score alert

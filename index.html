@@ -19,8 +19,7 @@
     <div class="modal-content">
       <span class="close-button close-iButton">&times;</span>
       <h2>How to Play</h2>
-      <p>Clear horizontal lines of blocks by manuvering the falling blocks to fill each row. Earn more points by clearing multiple lines at once. Speed up the rate of falling by soft or hard dropping. Hard dropping earns an extra point for each row
-        skipped. The blocks will progressively fall faster as you achieve higher levels. The game ends when the blocks reach the top of the playing field.</p>
+      <p>Clear horizontal lines by manuvering the falling blocks to fill each row. Earn more points by clearing multiple lines at once. Make the piece fall faster by soft or hard dropping. Hard dropping earns an extra point for each row skipped. The blocks will progressively fall faster as you achieve higher levels. Use the hold area to stash a piece for later use. The game ends when the blocks reach the top of the playing field.</p>
       <ul>
         <p>KEYBOARD CONTROLS</p>
         <li>right arrow = move piece right</li>
@@ -29,6 +28,7 @@
         <li>down arrow = soft drop</li>
         <li>spacebar = hard drop</li>
         <li>p = pause/unpause the game</li>
+        <li>shift = hold/use the held piece</li>
       </ul>
     </div>
   </div>
@@ -52,7 +52,7 @@
     </div>
     <canvas id="tetris" width="300px" height="600px"></canvas>
     <div class="preview">
-      <p>Preview</p>
+      <p>Next</p>
       <canvas id="previewWindow" width="80px" height="80px"></canvas>
     </div>
   </div>
@@ -65,7 +65,7 @@
   </div>
 
   <div class="highScore">
-    High Score : <span id="highScore"></span>
+    High Score : <span id="highScore"></span>margin
   </div>
 
 
