@@ -11,13 +11,12 @@ Added features:
   - levels and corresponding drop speed increase
   - dynamic scoring incorporating number of lines cleared at once, current level, and hard drop distance
   - instructions and settings panels
-  - animated start
+  - animated start sequence
   - high score kept in local storage
 
 Future functionality to be added:
   - animated line clearing
   - animated game over
-  - animated message for tetris and t-spin
+  - animated messaging for tetris, t-spin, and new high score
   - dynamic scoring for t-spins, combos, and back-to-back tetrises
   - music
-  - new high score alert

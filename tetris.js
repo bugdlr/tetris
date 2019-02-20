@@ -1,6 +1,5 @@
 // TO DO
 // ready, set, go after play again
-// disable space bar during ready set go
 // score more for combos
 // animate row delete and tetris
 // add preview window
@@ -428,7 +427,7 @@ function CONTROL(event) {
   if (event.keyCode == 80) {
     pause();
   }
-  if (paused == false && gameOver == false) {
+  if (paused == false && gameOver == false && ready.style.WebkitAnimationPlayState != "running") {
     if (event.keyCode == 37) {
       p.moveLeft();
       dropStart.Date.now();
@@ -480,7 +479,7 @@ function readySetGo() {
   ready.style.WebkitAnimationPlayState = "running";
   set.style.WebkitAnimationPlayState = "running";
   go.style.WebkitAnimationPlayState = "running";
-  setTimeout(readyAgain, 5000);
+  setTimeout(readyAgain, 4000);
 }
 
 function readyAgain() {
