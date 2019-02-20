@@ -163,13 +163,33 @@ a:visited {
   border: 3px solid black;
 }
 
-.canvases #previewWindow{
+.canvases #previewWindow {
   width: 80px;
   height: 80px;
-  margin: 10px;
+  margin-left: 10px;
   border: 3px solid black;
   float: right;
 }
+
+.canvases #holdWindow {
+  width: 80px;
+  height: 80px;
+  margin-right: 10px;
+  border: 3px solid black;
+  float: left;
+}
+
+.hold p,
+.preview p {
+  text-align: center;
+  text-transform: uppercase;
+  margin: 3px 10px 3px 0;
+}
+
+.preview p {
+  margin: 3px 0 3px 10px;
+}
+
 
 
 button {

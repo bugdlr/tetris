@@ -12,12 +12,9 @@
 // refactor modals
 // ghost piece bug when underneath locked pieces
 // don't let piece overlap ghost
-// stop pieces from falling at game over
 
 const cvs = document.getElementById("tetris");
 const ctx = cvs.getContext('2d');
-const previewWindow = document.getElementById("previewWindow");
-const windowCtx = previewWindow.getContext('2d');
 const scoreElement = document.getElementById("score");
 const levelElement = document.getElementById("level");
 const highScoreElement = document.getElementById("highScore");
@@ -31,26 +28,9 @@ const vacant = "white";
 const gray = "rgba(0,0,0,0.1)";
 
 let board = [];
-let preview = [];
 
 // draw a square
 function drawSquare(x, y, color) {
-  ctx.fillStyle = color;
-  ctx.fillRect(x * sq, y * sq, sq, sq);
-
-  ctx.strokeStyle = vacant;
-  ctx.strokeRect(x * sq, y * sq, sq, sq);
-}
-
-function drawPreviewSquare(x, y, color) {
-  windowCtx.fillStyle = color;
-  windowCtx.fillRect(x * 20, y * 20, 20, 20);
-
-  windowCtx.strokeStyle = vacant;
-  windowCtx.strokeRect(x * 20, y * 20, 20, 20);
-}
-
-function drawCanvas() {
   ctx.fillStyle = color;
   ctx.fillRect(x * sq, y * sq, sq, sq);
 
@@ -112,9 +92,6 @@ function Piece(tetrimino, color) {
   this.y = -2;
 
   this.ghost = Object.create(this);
-  this.preview = Object.create(this);
-  this.preview.x = 0;
-  this.preview.y = 0;
 }
 
 // ghost piece toggle and positioning
@@ -372,7 +349,7 @@ function CONTROL(event) {
   if (event.keyCode == 80) {
     pause();
   }
-  if (paused == false) {
+  if (paused == false && gameOver == false) {
     if (event.keyCode == 37) {
       p.moveLeft();
       dropStart.Date.now();
@@ -430,7 +407,6 @@ function readyAgain() {
 }
 
 function setScore () {
-  gameOver = false;
   if (highScoreElement.innerHTML < score) {
     highScoreValue = score;
     highScoreElement.innerHTML = highScoreValue;
@@ -441,6 +417,7 @@ function setScore () {
 function reset() {
   score = 0;
   level = 1;
+  gameOver = false;
   scoreElement.innerHTML = score;
   levelElement.innerHTML = level;
   startButton.style.display = "none";
