@@ -96,6 +96,7 @@ function randomPiece() {
 }
 
 let p = randomPiece();
+let previewPiece = randomPiece();
 
 // the object piece
 
@@ -186,8 +187,9 @@ Piece.prototype.moveDown = function() {
     // lock the pieces and generate a new one
     this.lock();
     clearPreview();
-    p = randomPiece();
-    this.preview.fill(this.preview.color, drawPreview);
+    p = previewPiece;
+    previewPiece = randomPiece();
+    previewPiece.preview.fill(previewPiece.preview.color, drawPreview);
   }
 }
 
@@ -205,8 +207,9 @@ Piece.prototype.hardDrop = function() {
   this.draw();
   this.lock();
   clearPreview();
-  p = randomPiece();
-  p.preview.fill(p.preview.color, drawPreview);
+  p = previewPiece;
+  previewPiece = randomPiece();
+  previewPiece.preview.fill(previewPiece.preview.color, drawPreview);
   dropDifference = this.y - startDrop;
   score += dropDifference;
   scoreElement.innerHTML = score;
@@ -322,6 +325,7 @@ Piece.prototype.lock = function() {
     // update the board
   }
   drawBoard(tetris, 20, 10);
+  previewPiece.preview.fill(previewPiece.preview.color, drawPreview);
   speedUp();
 
   rowsClearedperLevel += rowsCleared;
@@ -461,6 +465,7 @@ function reset() {
   startButton.innerHTML = "Play Again?"
   startButton.classList.add("play-again");
   gameOverElement.style.display = "none";
+  clearPreview();
   createBoard(tetris, 20, 10);
   drawBoard(tetris, 20, 10);
   readySetGo();
