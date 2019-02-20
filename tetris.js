@@ -27,7 +27,9 @@ const sq = 30;
 const vacant = "white";
 const gray = "rgba(0,0,0,0.1)";
 
-let board = [];
+let tetris = [];
+let preview = [];
+let hold = [];
 
 // draw a square
 function drawSquare(x, y, color) {
@@ -38,9 +40,8 @@ function drawSquare(x, y, color) {
   ctx.strokeRect(x * sq, y * sq, sq, sq);
 }
 
-
 // create the board
-function createBoard() {
+function createBoard(board, row, col) {
   for (r = 0; r < row; r++) {
     board[r] = [];
     for (c = 0; c < col; c++) {
@@ -48,17 +49,21 @@ function createBoard() {
     }
   }
 }
-createBoard();
+createBoard(tetris, 20, 10);
+createBoard(preview, 4, 4);
+createBoard(hold, 4, 4);
 
 // draw the board
-function drawBoard() {
+function drawBoard(board, row, col) {
   for (r = 0; r < row; r++) {
     for (c = 0; c < col; c++) {
       drawSquare(c, r, board[r][c]);
     }
   }
 }
-drawBoard();
+drawBoard(tetris, 20, 10);
+drawBoard(preview, 4, 4);
+drawBoard(hold, 4, 4);
 
 
 // the pieces and their colors
@@ -246,7 +251,7 @@ Piece.prototype.lock = function() {
         break;
       }
       // lock the piece
-      board[this.y + r][this.x + c] = this.color;
+      tetris[this.y + r][this.x + c] = this.color;
     }
   }
 
@@ -254,19 +259,19 @@ Piece.prototype.lock = function() {
   for (r = 0; r < row; r++) {
     let isRowFull = true;
     for (c = 0; c < col; c++) {
-      isRowFull = isRowFull && (board[r][c] != vacant);
+      isRowFull = isRowFull && (tetris[r][c] != vacant);
     }
     if (isRowFull) {
       rowsCleared++
       // if row is full, move down all rows above it
       for (y = r; y > 1; y--) {
         for (c = 0; c < col; c++) {
-          board[y][c] = board[y - 1][c];
+          tetris[y][c] = tetris[y - 1][c];
         }
       }
       // the top row has no row above it
       for (c = 0; c < col; c++) {
-        board[0][c] = vacant;
+        tetris[0][c] = vacant;
       }
     }
 
@@ -286,7 +291,7 @@ Piece.prototype.lock = function() {
 
     // update the board
   }
-  drawBoard();
+  drawBoard(tetris, 20, 10);
   speedUp();
 
   rowsClearedperLevel += rowsCleared;
@@ -320,7 +325,7 @@ Piece.prototype.collision = function(x, y, piece) {
       }
 
       // check if there is a locked piece already in place
-      if (board[newY][newX] != vacant && board[newY][newX] != gray) {
+      if (tetris[newY][newX] != vacant && tetris[newY][newX] != gray) {
         return true;
       }
     }
@@ -407,11 +412,13 @@ function readyAgain() {
 }
 
 function setScore () {
-  if (highScoreElement.innerHTML < score) {
-    highScoreValue = score;
-    highScoreElement.innerHTML = highScoreValue;
+  if (gameOver == true) {
+    if (highScoreElement.innerHTML < score) {
+      highScoreValue = score;
+      highScoreElement.innerHTML = highScoreValue;
+    }
+    localStorage.setItem('highScore', highScoreValue);
   }
-  localStorage.setItem('highScore', highScoreValue);
 }
 
 function reset() {
@@ -424,8 +431,8 @@ function reset() {
   startButton.innerHTML = "Play Again?"
   startButton.classList.add("play-again");
   gameOverElement.style.display = "none";
-  createBoard();
-  drawBoard();
+  createBoard(tetris, 20, 10);
+  drawBoard(tetris, 20, 10);
   readySetGo();
   rate = 800;
   setTimeout(drop, 4000);
