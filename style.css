@@ -5,7 +5,7 @@ body {
   position: relative;
   height: 100%;
   width: 100%;
-  background: rgba(250,250,250,0.1);
+  background: rgb(253,253,253);
 }
 
 h1 {
@@ -34,8 +34,11 @@ p, li {
   0% {
     opacity: 0;
   }
-  50% {
+  12% {
     opacity: 1;
+  }
+  24% {
+    opacity: 0;
   }
   100% {
     opacity: 0;
@@ -44,25 +47,28 @@ p, li {
 
 .anim {
   animation-name: popUp;
-  animation-duration: 1.3s;
+  animation-duration: 4s;
   animation-direction: forwards;
   -webkit-animation-play-state: paused;
+  animation-iteration-count: infinite;
 }
 
 .animSet {
   animation-name: popUp;
-  animation-duration: 1.3s;
+  animation-duration: 4s;
   animation-direction: forwards;
-  animation-delay: 1.4s;
+  animation-delay: 1.2s;
   -webkit-animation-play-state: paused;
+  animation-iteration-count: infinite;
 }
 
 .animGo {
   animation-name: popUp;
-  animation-duration: 1.3s;
+  animation-duration: 4s;
   animation-direction: forwards;
-  animation-delay: 2.8s;
+  animation-delay: 2.4s;
   -webkit-animation-play-state: paused;
+  animation-iteration-count: infinite;
 }
 
 .links {
@@ -106,6 +112,7 @@ a:visited {
   width: 32rem;
   border-radius: 0.5rem;
   font-size: 1.4rem;
+  z-index: 3;
 }
 
  .modal-content h2 {
@@ -220,8 +227,9 @@ button:hover {
   height: auto;
   margin-left: -90px;
   padding: 10px;
+  position: absolute;
+  z-index: 5;
 }
-
 
 .score {
   font-size: 2rem;
@@ -239,10 +247,17 @@ button:hover {
 .paused,
  #game-over {
   display: none;
-  font-size: 30px;
+  font-size: 35px;
   position: absolute;
   text-align: center;
-  top: 30vh;
   width: 100%;
   margin: 0 auto;
+  padding: 250px 0;
+  z-index: 3;
+  left: 0;
+  top: -50px;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
 }

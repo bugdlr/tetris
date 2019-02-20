@@ -1,16 +1,11 @@
 // TO DO
-// ready, set, go after play again
 // score more for combos
 // animate row delete and tetris
-// add preview window
-// hold piece
 // t-spin animation and scoring
-// save high score
-// make canvas size responsive
+// make Game Over legible
 // darken screen when paused or game over
 // refactor modals
 // ghost piece bug when underneath locked pieces
-// don't let piece overlap ghost
 
 const cvs = document.getElementById("tetris");
 const ctx = cvs.getContext('2d');
@@ -479,7 +474,7 @@ function readySetGo() {
   ready.style.WebkitAnimationPlayState = "running";
   set.style.WebkitAnimationPlayState = "running";
   go.style.WebkitAnimationPlayState = "running";
-  setTimeout(readyAgain, 4000);
+  setTimeout(readyAgain, 3900);
 }
 
 function readyAgain() {
