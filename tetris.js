@@ -1,12 +1,13 @@
 // TO DO
-// score more for combos
-// animate row delete and tetris
+// animate row delete
+// messaging for tetris
 // t-spin animation and scoring
-// make Game Over legible
-// darken screen when paused or game over
+// score more for combos
 // refactor modals
 // ghost piece bug when underneath locked pieces
+// glitch where it occassionally erases a locked piece during hold
 
+// DOM elements
 const cvs = document.getElementById("tetris");
 const ctx = cvs.getContext('2d');
 const previewWindow = document.getElementById("previewWindow");
@@ -19,15 +20,35 @@ const highScoreElement = document.getElementById("highScore");
 const startButton = document.getElementById("start");
 const gameOverElement = document.getElementById("game-over");
 
+// drawing variables
 const row = 20;
 const col = 10;
 const sq = 30;
 const vacant = "white";
 const gray = "rgba(0,0,0,0.1)";
 
+// the pieces and their colors
+const pieces = [
+  [Z, "red"],
+  [S, "green"],
+  [T, "purple"],
+  [O, "yellow"],
+  [I, "cyan"],
+  [L, "orange"],
+  [J, "blue"]
+];
+
+// the canvases
 let tetris = [];
 let preview = [];
 let hold = [];
+
+// scoring variables
+let score = 0;
+let rowsCleared = 0;
+let rowsClearedperLevel = 0;
+let level = 1;
+let highScoreValue = highScoreElement.innerHTML;
 
 // draw a square
 function drawSquare(x, y, color) {
@@ -80,28 +101,18 @@ drawBoard(preview, 4, 4);
 drawBoard(hold, 4, 4);
 
 
-// the pieces and their colors
-const pieces = [
-  [Z, "red"],
-  [S, "green"],
-  [T, "purple"],
-  [O, "yellow"],
-  [I, "cyan"],
-  [L, "orange"],
-  [J, "blue"]
-];
-
 // generate random pieces
 function randomPiece() {
   let r = randomN = Math.floor(Math.random() * pieces.length);
   return new Piece(pieces[r][0], pieces[r][1]);
 }
 
+// set the inital pieces
 let p = randomPiece();
 let previewPiece = randomPiece();
 
-// the object piece
 
+// the object piece
 function Piece(tetrimino, color) {
   this.tetrimino = tetrimino;
   this.color = color;
@@ -112,32 +123,11 @@ function Piece(tetrimino, color) {
   this.x = 3; // piece starting position
   this.y = -2;
 
-  this.ghost = Object.create(this);
-  this.preview = Object.create(this);
+  this.ghost = Object.create(this); // copy of Piece object to be used as the ghost
+  this.preview = Object.create(this);// copy of Piece object to be displayed as preview
+  // coordinates for preview window display
   this.preview.x = 1;
   this.preview.y = 0;
-}
-
-// ghost piece toggle and positioning
-let ghostOn = true;
-let ghostBox = document.getElementById("ghostBox");
-
-function toggleGhost() {
-  ghostOn = !ghostOn;
-  if (!ghostOn) {
-    p.ghost.fill(vacant);
-  }
-}
-
-ghostBox.addEventListener('click', toggleGhost);
-
-Piece.prototype.ghostPosition = function() {
-  this.ghost.y = 0;
-  for (let r = 0; r <= 19; r++) {
-    if (!this.collision(0, 1, this.activeTetrimino)) {
-      this.ghost.y++;
-    }
-  }
 }
 
 // fill function
@@ -168,7 +158,7 @@ Piece.prototype.unDraw = function() {
   }
 }
 
-// clear preview
+// clear preview or hold areas
 function clearArea (area) {
   for (r = 0; r < 4; r++) {
     for (c = 0; c < 4; c++) {
@@ -176,6 +166,32 @@ function clearArea (area) {
     }
   }
 }
+
+// ghost piece toggle and positioning
+let ghostOn = true;
+let ghostBox = document.getElementById("ghostBox");
+
+function toggleGhost() {
+  ghostOn = !ghostOn;
+  if (!ghostOn) {
+    p.ghost.fill(vacant);
+  }
+}
+
+ghostBox.addEventListener('click', toggleGhost);
+
+Piece.prototype.ghostPosition = function() {
+  // the same as current piece, but at the bottom
+  this.ghost.y = 0;
+  for (let r = 0; r <= 19; r++) {
+    // figure out where the bottom is
+    if (!this.collision(0, 1, this.activeTetrimino)) {
+      this.ghost.y++;
+    }
+  }
+}
+
+// ******MOVEMENT FUNCTIONS*********//
 
 // move the piece down
 Piece.prototype.moveDown = function() {
@@ -185,33 +201,41 @@ Piece.prototype.moveDown = function() {
     this.y++;
     this.draw();
   } else {
-    // lock the pieces and generate a new one
+    // lock the pieces
     this.lock();
+    // clear preview
     clearArea(drawPreview);
+    // generate new pieces
     p = previewPiece;
     previewPiece = randomPiece();
+    // draw the preview
     previewPiece.preview.fill(previewPiece.preview.color, drawPreview);
   }
 }
 
 // hard drop the piece
-let dropDifference;
+let dropDifference; // used to measure how many rows were skipped in the hard drop
 
 Piece.prototype.hardDrop = function() {
-  let startDrop = this.y;
+  let startDrop = this.y; // where the piece is when hard drop is initiated
   for (r = 0; r <= 19; r++) {
+    // if it doesn't collide, move the piece down
     if (!this.collision(0, 1, this.activeTetrimino)) {
       this.unDraw();
       this.y++;
     }
   }
+  // once it does collide, draw it there and lock it
   this.draw();
   this.lock();
+  // update the preview
   clearArea(drawPreview);
   p = previewPiece;
   previewPiece = randomPiece();
   previewPiece.preview.fill(previewPiece.preview.color, drawPreview);
+  // calculate the distance dropped
   dropDifference = this.y - startDrop;
+  // update the score
   score += dropDifference;
   scoreElement.innerHTML = score;
 }
@@ -257,44 +281,7 @@ Piece.prototype.rotate = function() {
   }
 }
 
-// hold the piece
-let holding = false;
-let heldPiece;
-let unheldPiece = heldPiece;
-let firstHold = true;
 
-// fix glitch where it occassionally erases a locked piece
-
-Piece.prototype.hold = function () {
-  if (firstHold) {
-    this.unDraw();
-    clearArea(drawPreview);
-    clearArea(drawHold);
-    unheldPiece = heldPiece;
-    heldPiece = p;
-    firstHold = false;
-
-    if (holding) {
-      p = unheldPiece;
-    } else {
-      p = previewPiece;
-      previewPiece = randomPiece();
-    }
-
-    this.y = -1;
-    this.x = 3;
-    this.preview.fill(this.preview.color, drawHold);
-    previewPiece.preview.fill(previewPiece.preview.color, drawPreview);
-    holding = true;
-  }
-}
-
-let score = 0;
-let rowsCleared = 0;
-let rowsClearedperLevel = 0;
-let level = 1;
-let highScoreValue = highScoreElement.innerHTML;
-highScoreElement.innerHTML = localStorage.getItem('highScore');
 
 
 Piece.prototype.lock = function() {
@@ -321,7 +308,6 @@ Piece.prototype.lock = function() {
       firstHold = true;
     }
   }
-
   // remove full rows
   for (r = 0; r < row; r++) {
     let isRowFull = true;
@@ -341,7 +327,6 @@ Piece.prototype.lock = function() {
         tetris[0][c] = vacant;
       }
     }
-
     // update the score
     if (rowsCleared == 1) {
       score += 40 * (level + 1);
@@ -352,12 +337,10 @@ Piece.prototype.lock = function() {
     } else if (rowsCleared == 4) {
       score += 800 * (level + 1);
     }
-
     scoreElement.innerHTML = score;
     levelElement.innerHTML = level;
-
-    // update the board
   }
+  // update the board
   drawBoard(tetris, 20, 10);
   previewPiece.preview.fill(previewPiece.preview.color, drawPreview);
   speedUp();
@@ -370,6 +353,35 @@ Piece.prototype.lock = function() {
   }
 }
 
+// hold function
+let holding = false;
+let heldPiece;
+let unheldPiece = heldPiece;
+let firstHold = true;
+
+Piece.prototype.hold = function () {
+  if (firstHold) {
+    this.unDraw();
+    clearArea(drawPreview);
+    clearArea(drawHold);
+    unheldPiece = heldPiece;
+    heldPiece = p;
+    firstHold = false;
+
+    if (holding) {
+      p = unheldPiece;
+    } else {
+      p = previewPiece;
+      previewPiece = randomPiece();
+    }
+
+    this.y = -1;
+    this.x = 3;
+    this.preview.fill(this.preview.color, drawHold);
+    previewPiece.preview.fill(previewPiece.preview.color, drawPreview);
+    holding = true;
+  }
+}
 
 // collision function
 Piece.prototype.collision = function(x, y, piece) {
@@ -442,7 +454,7 @@ function CONTROL(event) {
   }
 }
 
-// move the piece down automatically
+// the falling of the blocks
 let dropStart = Date.now();
 let gameOver = false;
 let rate = 800;
@@ -463,9 +475,7 @@ function drop() {
   }
 }
 
-
-
-// start game
+// start game animation sequence
 const ready = document.querySelector("#ready");
 const set = document.querySelector("#set");
 const go = document.querySelector("#go");
@@ -514,6 +524,9 @@ function reset() {
 }
 
 startButton.addEventListener('click', reset);
+
+// retrieve high score from local storage
+highScoreElement.innerHTML = localStorage.getItem('highScore');
 
 // toggle modals
 const iModal = document.querySelector(".instruction-modal");

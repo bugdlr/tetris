@@ -21,6 +21,7 @@ p, li {
 
 .readySetGo h2 {
   opacity: 0;
+  font-size: 2rem;
   position: absolute;
   text-align: center;
   top: 30vh;
@@ -103,13 +104,13 @@ a:visited {
 
 .modal-content {
   position: absolute;
-  top: 35%;
+  top: 45%;
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: white;
   padding: 1.5rem;
   margin-top: 1.5rem;
-  width: 32rem;
+  width: auto;
   border-radius: 0.5rem;
   font-size: 1.4rem;
   z-index: 3;

@@ -1,6 +1,6 @@
 # tetris
 
-A JavaScript-based desktop browser version of classic Tetris, modified from a https://www.youtube.com/c/codeexplained tutorial.
+A desktop browser version of classic Tetris written in JavaScript, modified from a https://www.youtube.com/c/codeexplained tutorial.
 
 Added features:
   - pause
@@ -16,7 +16,6 @@ Added features:
 
 Future functionality to be added:
   - animated line clearing
-  - animated game over
-  - animated messaging for tetris, t-spin, and new high score
+  - animated messages for tetris, t-spin, and new high score
   - dynamic scoring for t-spins, combos, and back-to-back tetrises
   - music
