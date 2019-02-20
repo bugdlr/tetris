@@ -15,6 +15,10 @@
 
 const cvs = document.getElementById("tetris");
 const ctx = cvs.getContext('2d');
+const previewWindow = document.getElementById("previewWindow");
+const pwctx = previewWindow.getContext('2d');
+const holdWindow = document.getElementById("holdWindow");
+const hwctx = holdWindow.getContext('2d');
 const scoreElement = document.getElementById("score");
 const levelElement = document.getElementById("level");
 const highScoreElement = document.getElementById("highScore");
@@ -38,6 +42,14 @@ function drawSquare(x, y, color) {
 
   ctx.strokeStyle = vacant;
   ctx.strokeRect(x * sq, y * sq, sq, sq);
+}
+
+function drawPreview(x, y, color) {
+  pwctx.fillStyle = color;
+  pwctx.fillRect(x * 20, y * 20, 20, 20);
+
+  pwctx.strokeStyle = vacant;
+  pwctx.strokeRect(x * 20, y * 20, 20, 20);
 }
 
 // create the board
@@ -85,7 +97,8 @@ function randomPiece() {
 
 let p = randomPiece();
 
-// the Object Piece
+// the object piece
+
 function Piece(tetrimino, color) {
   this.tetrimino = tetrimino;
   this.color = color;
@@ -97,6 +110,9 @@ function Piece(tetrimino, color) {
   this.y = -2;
 
   this.ghost = Object.create(this);
+  this.preview = Object.create(this);
+  this.preview.x = 1;
+  this.preview.y = 0;
 }
 
 // ghost piece toggle and positioning
@@ -122,11 +138,11 @@ Piece.prototype.ghostPosition = function() {
 }
 
 // fill function
-Piece.prototype.fill = function(color) {
+Piece.prototype.fill = function(color, fun) {
   for (r = 0; r < this.activeTetrimino.length; r++) {
     for (c = 0; c < this.activeTetrimino.length; c++) {
       if (this.activeTetrimino[r][c]) {
-        drawSquare(this.x + c, this.y + r, color);
+        fun(this.x + c, this.y + r, color);
       }
     }
   }
@@ -134,18 +150,28 @@ Piece.prototype.fill = function(color) {
 
 // draw a piece to the board
 Piece.prototype.draw = function() {
-  this.fill(this.color);
+  this.fill(this.color, drawSquare);
   if (ghostOn) {
     this.ghost.ghostPosition();
-    this.ghost.fill(gray);
+    this.ghost.fill(gray, drawSquare);
   }
 }
 
+
 // undraw a piece
 Piece.prototype.unDraw = function() {
-  this.fill(vacant);
+  this.fill(vacant, drawSquare);
   if (ghostOn) {
-    this.ghost.fill(vacant);
+    this.ghost.fill(vacant, drawSquare);
+  }
+}
+
+// clear preview
+function clearPreview () {
+  for (r = 0; r < 4; r++) {
+    for (c = 0; c < 4; c++) {
+      drawPreview(r, c, vacant);
+    }
   }
 }
 
@@ -159,7 +185,9 @@ Piece.prototype.moveDown = function() {
   } else {
     // lock the pieces and generate a new one
     this.lock();
+    clearPreview();
     p = randomPiece();
+    this.preview.fill(this.preview.color, drawPreview);
   }
 }
 
@@ -176,7 +204,9 @@ Piece.prototype.hardDrop = function() {
   }
   this.draw();
   this.lock();
+  clearPreview();
   p = randomPiece();
+  p.preview.fill(p.preview.color, drawPreview);
   dropDifference = this.y - startDrop;
   score += dropDifference;
   scoreElement.innerHTML = score;
