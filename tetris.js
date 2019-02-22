@@ -39,9 +39,9 @@ const pieces = [
 ];
 
 // the canvases
-let tetris = [];
-let preview = [];
-let hold = [];
+const tetris = [];
+const preview = [];
+const hold = [];
 
 // scoring variables
 let score = 0;
@@ -124,7 +124,7 @@ function Piece(tetrimino, color) {
   this.y = -2;
 
   this.ghost = Object.create(this); // copy of Piece object to be used as the ghost
-  this.preview = Object.create(this);// copy of Piece object to be displayed as preview
+  this.preview = Object.create(this); // copy of Piece object to be displayed as preview
   // coordinates for preview window display
   this.preview.x = 1;
   this.preview.y = 0;
@@ -159,7 +159,7 @@ Piece.prototype.unDraw = function() {
 }
 
 // clear preview or hold areas
-function clearArea (area) {
+function clearArea(area) {
   for (r = 0; r < 4; r++) {
     for (c = 0; c < 4; c++) {
       area(r, c, vacant);
@@ -281,9 +281,6 @@ Piece.prototype.rotate = function() {
   }
 }
 
-
-
-
 Piece.prototype.lock = function() {
   for (r = 0; r < this.activeTetrimino.length; r++) {
     for (c = 0; c < this.activeTetrimino.length; c++) {
@@ -359,7 +356,7 @@ let heldPiece;
 let unheldPiece = heldPiece;
 let firstHold = true;
 
-Piece.prototype.hold = function () {
+Piece.prototype.hold = function() {
   if (firstHold) {
     this.unDraw();
     clearArea(drawPreview);
@@ -484,7 +481,7 @@ function readySetGo() {
   ready.style.WebkitAnimationPlayState = "running";
   set.style.WebkitAnimationPlayState = "running";
   go.style.WebkitAnimationPlayState = "running";
-  setTimeout(readyAgain, 3900);
+  setTimeout(readyAgain, 4000);
 }
 
 function readyAgain() {
@@ -493,7 +490,7 @@ function readyAgain() {
   go.removeAttribute("style");
 }
 
-function setScore () {
+function setScore() {
   if (gameOver == true) {
     if (highScoreElement.innerHTML < score) {
       highScoreValue = score;
