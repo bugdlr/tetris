@@ -51,7 +51,7 @@ let level = 1;
 let highScoreValue = highScoreElement.innerHTML;
 
 // draw a square
-function drawSquare(x, y, color) {
+const drawSquare = (x, y, color) => {
   ctx.fillStyle = color;
   ctx.fillRect(x * sq, y * sq, sq, sq);
 
@@ -59,7 +59,7 @@ function drawSquare(x, y, color) {
   ctx.strokeRect(x * sq, y * sq, sq, sq);
 }
 
-function drawPreview(x, y, color) {
+const drawPreview = (x, y, color) => {
   pwctx.fillStyle = color;
   pwctx.fillRect(x * 20, y * 20, 20, 20);
 
@@ -67,7 +67,7 @@ function drawPreview(x, y, color) {
   pwctx.strokeRect(x * 20, y * 20, 20, 20);
 }
 
-function drawHold(x, y, color) {
+const drawHold = (x, y, color) => {
   hwctx.fillStyle = color;
   hwctx.fillRect(x * 20, y * 20, 20, 20);
 
@@ -76,7 +76,7 @@ function drawHold(x, y, color) {
 }
 
 // create the board
-function createBoard(board, row, col) {
+const createBoard = (board, row, col) => {
   for (r = 0; r < row; r++) {
     board[r] = [];
     for (c = 0; c < col; c++) {
@@ -89,7 +89,7 @@ createBoard(preview, 4, 4);
 createBoard(hold, 4, 4);
 
 // draw the board
-function drawBoard(board, row, col) {
+const drawBoard = (board, row, col) => {
   for (r = 0; r < row; r++) {
     for (c = 0; c < col; c++) {
       drawSquare(c, r, board[r][c]);
@@ -102,7 +102,7 @@ drawBoard(hold, 4, 4);
 
 
 // generate random pieces
-function randomPiece() {
+const randomPiece = () => {
   let r = randomN = Math.floor(Math.random() * pieces.length);
   return new Piece(pieces[r][0], pieces[r][1]);
 }
@@ -159,7 +159,7 @@ Piece.prototype.unDraw = function() {
 }
 
 // clear preview or hold areas
-function clearArea(area) {
+const clearArea = area => {
   for (r = 0; r < 4; r++) {
     for (c = 0; c < 4; c++) {
       area(r, c, vacant);
@@ -171,7 +171,7 @@ function clearArea(area) {
 let ghostOn = true;
 let ghostBox = document.getElementById("ghostBox");
 
-function toggleGhost() {
+const toggleGhost = () => {
   ghostOn = !ghostOn;
   if (!ghostOn) {
     p.ghost.fill(vacant);
@@ -410,12 +410,10 @@ Piece.prototype.collision = function(x, y, piece) {
   return false;
 }
 
-// CONTROL the pieces
-document.addEventListener('keydown', CONTROL);
-
+// pause function
 let paused = false;
 
-function pause() {
+const pause = () => {
   paused = !paused;
   if (startButton.style.display == "none" && !iModal.classList.contains("show-modal") && !sModal.classList.contains("show-modal")) {
     if (paused == false) {
@@ -427,7 +425,8 @@ function pause() {
   }
 }
 
-function CONTROL(event) {
+// CONTROL the pieces
+const CONTROL = event => {
   if (event.keyCode == 80) {
     pause();
   }
@@ -451,16 +450,18 @@ function CONTROL(event) {
   }
 }
 
+document.addEventListener('keydown', CONTROL);
+
 // the falling of the blocks
 let dropStart = Date.now();
 let gameOver = false;
 let rate = 800;
 
-function speedUp() {
+const speedUp = () => {
   rate = levels[level - 1]
 }
 
-function drop() {
+const drop = () => {
   let now = Date.now();
   let delta = now - dropStart;
   if (delta > rate) {
@@ -477,20 +478,20 @@ const ready = document.querySelector("#ready");
 const set = document.querySelector("#set");
 const go = document.querySelector("#go");
 
-function readySetGo() {
+const readySetGo = () => {
   ready.style.WebkitAnimationPlayState = "running";
   set.style.WebkitAnimationPlayState = "running";
   go.style.WebkitAnimationPlayState = "running";
   setTimeout(readyAgain, 4000);
 }
 
-function readyAgain() {
+const readyAgain = () => {
   ready.removeAttribute("style");
   set.removeAttribute("style");
   go.removeAttribute("style");
 }
 
-function setScore() {
+const setScore = () => {
   if (gameOver == true) {
     if (highScoreElement.innerHTML < score) {
       highScoreValue = score;
@@ -500,7 +501,7 @@ function setScore() {
   }
 }
 
-function reset() {
+const reset = () => {
   score = 0;
   level = 1;
   gameOver = false;
@@ -533,7 +534,7 @@ const sTrigger = document.querySelector(".settings-trigger");
 const iCloseButton = document.querySelector(".close-iButton");
 const sCloseButton = document.querySelector(".close-sButton");
 
-function toggleModal(modal) {
+const toggleModal = modal => {
   modal.classList.toggle("show-modal");
   if (!paused && modal.classList.contains("show-modal")) {
     pause();
@@ -542,29 +543,22 @@ function toggleModal(modal) {
   }
 }
 
-function windowOnClick(event) {
+const windowOnClick = event => {
   if (event.target === iModal) {
     toggleModal(iModal);
   }
 }
 
-function sWindowOnClick(event) {
+const sWindowOnClick = event => {
   if (event.target === sModal) {
     toggleModal(sModal);
   }
 }
 
-iTrigger.addEventListener("click", function() {
-  toggleModal(iModal)
-});
-sTrigger.addEventListener("click", function() {
-  toggleModal(sModal)
-});
-iCloseButton.addEventListener("click", function() {
-  toggleModal(iModal)
-});
-sCloseButton.addEventListener("click", function() {
-  toggleModal(sModal)
-});
+iTrigger.addEventListener("click", () => toggleModal(iModal));
+sTrigger.addEventListener("click", () => toggleModal(sModal));
+iCloseButton.addEventListener("click", () => toggleModal(iModal));
+sCloseButton.addEventListener("click", () => toggleModal(sModal));
+
 window.addEventListener("click", windowOnClick);
 window.addEventListener("click", sWindowOnClick);
