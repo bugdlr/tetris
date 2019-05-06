@@ -58,7 +58,9 @@ p, li {
 .anim {
   animation-name: popUp;
   animation-duration: 4.05s;
-  animation-direction:100vhcount: infinite;
+  animation-direction: forwards;
+  -webkit-animation-play-state: paused;
+  animation-iteration-count: infinite;
 }
 
 .animSet {
@@ -226,6 +228,7 @@ button {
   top: 48%;
   height: 5rem;
   margin-top: -5rem;
+  outline: none;
 }
 
 button:hover {
